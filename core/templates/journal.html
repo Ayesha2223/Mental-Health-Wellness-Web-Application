@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Journal - HappyBird{% endblock %}
+
+{% block content %}
+<div class="journal-container">
+    <div class="journal-header" data-aos="fade-down">
+        <h1><i class="mdi mdi-notebook-outline me-2"></i>Your Journal</h1>
+        <p>Write your thoughts, reflect on your day, and track your emotional journey.</p>
+    </div>
+
+    <!-- Inspirational Quote -->
+    <div class="quote-card" data-aos="fade-up">
+        <div class="quote-icon">
+            <i class="mdi mdi-format-quote-open"></i>
+        </div>
+        <p class="quote-text">"Journaling is like whispering to one's self and listening at the same time."</p>
+        <p class="quote-author">- Mina Murray</p>
+    </div>
+
+    <!-- Journal Entry Form -->
+    <div class="journal-form-card" data-aos="fade-up" data-aos-delay="100">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="title" id="title" placeholder="Entry title..." required>
+                <label for="title">Title your entry</label>
+            </div>
+            <div class="form-floating mb-4">
+                <textarea class="form-control" name="content" id="content" rows="6" placeholder="What's on your mind?" required style="height: 200px"></textarea>
+                <label for="content">Write your thoughts</label>
+            </div>
+            <div class="text-end">
+                <button type="submit" class="btn btn-gradient">
+                    <i class="mdi mdi-notebook-plus me-2"></i>Save Entry
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Past Journal Entries -->
+    {% if entries %}
+    <div class="journal-entries-section" data-aos="fade-up" data-aos-delay="200">
+        <h2><i class="mdi mdi-history me-2"></i>Previous Entries</h2>
+        <div class="journal-entries-grid">
+            {% for entry in entries %}
+            <div class="journal-entry-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter|add:200 }}">
+                <div class="entry-date">
+                    <i class="mdi mdi-calendar"></i>
+                    {{ entry.created_at|date:"F j, Y" }}
+                </div>
+                <h5>{{ entry.title }}</h5>
+                <p class="entry-content">{{ entry.content }}</p>
+                <div class="entry-footer">
+                    <span class="entry-time">
+                        <i class="mdi mdi-clock-outline"></i>
+                        {{ entry.created_at|date:"g:i a" }}
+                    </span>
+                    <div class="entry-actions">
+                        <button class="btn btn-link" title="Edit">
+                            <i class="mdi mdi-pencil"></i>
+                        </button>
+                        <button class="btn btn-link" title="Delete">
+                            <i class="mdi mdi-delete"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state" data-aos="fade-up" data-aos-delay="200">
+        <i class="mdi mdi-notebook-plus-outline empty-icon"></i>
+        <p>No journal entries yet. Start writing your first entry!</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .journal-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .journal-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .journal-header h1 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .journal-header p {
+        color: var(--text-color);
+        opacity: 0.7;
+        font-size: 1.1rem;
+    }
+
+    /* Quote Card */
+    .quote-card {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .quote-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        opacity: 0.8;
+    }
+
+    .quote-text {
+        font-size: 1.2rem;
+        font-style: italic;
+        margin-bottom: 1rem;
+    }
+
+    .quote-author {
+        opacity: 0.8;
+    }
+
+    /* Journal Form */
+    .journal-form-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin-bottom: 3rem;
+    }
+
+    .form-floating > .form-control {
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .form-floating > .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-gradient {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        color: #fff;
+    }
+
+    /* Journal Entries */
+    .journal-entries-section {
+        margin-top: 4rem;
+    }
+
+    .journal-entries-section h2 {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .journal-entries-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .journal-entry-card {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .journal-entry-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .entry-date {
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .entry-content {
+        color: var(--text-color);
+        opacity: 0.8;
+        margin: 1rem 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+
+    .entry-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .entry-time {
+        color: var(--text-color);
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+
+    .entry-actions .btn-link {
+        color: var(--text-color);
+        opacity: 0.6;
+        padding: 0.25rem;
+        margin-left: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .entry-actions .btn-link:hover {
+        color: var(--primary-color);
+        opacity: 1;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-color);
+        opacity: 0.7;
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .journal-container {
+            padding: 1rem;
+        }
+
+        .journal-entries-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,416 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - HappyBird{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header Section -->
+    <div class="profile-header" data-aos="fade-down">
+        <div class="user-profile">
+            <div class="profile-avatar">
+                <i class="mdi mdi-account-circle"></i>
+            </div>
+            <div class="user-info">
+                <h2>{{ user.first_name|default:user.username }}'s Profile</h2>
+                <p>Member since {{ user.date_joined|date:"F d, Y" }}</p>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+            <button class="btn btn-outline" data-toggle="modal" data-target="#editProfileModal">
+                <i class="mdi mdi-pencil"></i> Edit Profile
+            </button>
+            <button class="btn btn-gradient">
+                <i class="mdi mdi-cog"></i> Settings
+            </button>
+        </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="profile-details" data-aos="fade-up">
+        <div class="profile-card">
+            <h3><i class="mdi mdi-account-details"></i> Personal Information</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <h4>Name</h4>
+                    <p>{{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Email</h4>
+                    <p>{{ user.email }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Username</h4>
+                    <p>{{ user.username }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Bio</h4>
+                    <p>{{ user.profile.bio|default:"No bio yet." }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Summary -->
+    <div class="stats-summary" data-aos="fade-up">
+        <h3><i class="mdi mdi-chart-line"></i> Your Journey</h3>
+        <div class="stats-grid">
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="mdi mdi-calendar-check"></i>
+                <h3>Streak</h3>
+                <p class="stat-value">{{ streak_days }} days</p>
+            </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="mdi mdi-notebook"></i>
+                <h3>Journal Entries</h3>
+                <p class="stat-value">{{ journal_count }}</p>
+            </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="mdi mdi-meditation"></i>
+                <h3>Mindful Minutes</h3>
+                <p class="stat-value">{{ mindful_minutes }}</p>
+            </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                <i class="mdi mdi-trophy"></i>
+                <h3>Achievements</h3>
+                <p class="stat-value">{{ achievements_count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Achievement Collection -->
+    <div class="achievements" data-aos="fade-up">
+        <h3><i class="mdi mdi-medal"></i> Achievements Collection</h3>
+        <div class="badge-grid">
+            {% for badge in user_badges %}
+            <div class="badge-card {% if badge.unlocked %}unlocked{% endif %}">
+                <i class="mdi {{ badge.icon }}"></i>
+                <h4>{{ badge.name }}</h4>
+                <p>{{ badge.description }}</p>
+                {% if not badge.unlocked %}
+                <div class="badge-progress">
+                    <div class="progress-bar" style="width: {{ badge.progress }}%"></div>
+                </div>
+                <p class="progress-text">{{ badge.progress }}% complete</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity" data-aos="fade-up">
+        <h3><i class="mdi mdi-history"></i> Recent Activity</h3>
+        <div class="activity-list">
+            {% for activity in recent_activities %}
+            <div class="activity-item">
+                <div class="activity-icon">
+                    <i class="mdi {{ activity.icon }}"></i>
+                </div>
+                <div class="activity-details">
+                    <h4>{{ activity.title }}</h4>
+                    <p>{{ activity.description }}</p>
+                    <span class="activity-time">{{ activity.timestamp|date:"F d, Y h:i a" }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="mdi mdi-information-outline"></i>
+                <p>No recent activity to show.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="mdi mdi-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="profileForm" method="post" action="{% url 'update_profile' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="first_name" value="{{ user.first_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="last_name" value="{{ user.last_name }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" name="email" value="{{ user.email }}">
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea class="form-control" name="bio" rows="4">{{ user.profile.bio }}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-gradient" onclick="submitProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .profile-avatar {
+        font-size: 4rem;
+        color: var(--primary-color);
+    }
+
+    .profile-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .profile-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 3rem;
+    }
+
+    .profile-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .info-item h4 {
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-item p {
+        font-size: 1.1rem;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .stats-summary, .achievements, .recent-activity {
+        margin-bottom: 3rem;
+    }
+
+    .stats-summary h3, .achievements h3, .recent-activity h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .badge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .badge-card {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .badge-card.unlocked {
+        opacity: 1;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .badge-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .badge-progress {
+        background: #eee;
+        height: 10px;
+        border-radius: 10px;
+        margin: 1rem 0 0.5rem;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: var(--primary-color);
+        height: 100%;
+    }
+
+    .progress-text {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .activity-list {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .activity-item {
+        display: flex;
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-icon {
+        background: var(--secondary-color);
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+    }
+
+    .activity-details {
+        flex: 1;
+    }
+
+    .activity-details h4 {
+        margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .empty-state {
+        padding: 3rem;
+        text-align: center;
+        color: #666;
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .modal-header .close {
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .user-profile {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .profile-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    function submitProfile() {
+        document.getElementById('profileForm').submit();
+    }
+</script>
+{% endblock %}

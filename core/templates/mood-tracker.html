@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mood Tracker - HappyBird{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4" style="color: #007bff;">Track Your Mood</h2>
+    <div class="card p-4 shadow" style="background-image: url('{% static 'images/mood-bg.jpg' %}'); background-size: cover; color: #fff;">
+        <form method="post" action="{% url 'track_mood' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-light">Submit</button>
+        </form>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="mt-5">
+        <h3 class="text-center" style="color: #FF6F61;">Your Monthly Mood Chart</h3>
+        <canvas id="moodChart"></canvas>
+    </div>
+    {% else %}
+    <div class="mt-5 text-center">
+        <p class="text-muted">Log in or register to view your personalized mood chart.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Chart.js for Mood Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if user.is_authenticated %}
+    const ctx = document.getElementById('moodChart').getContext('2d');
+    const moodDates = {{ mood_dates|safe }};
+    const moodValues = {{ mood_values|safe }};
+
+    if (moodDates.length === 0) {
+        moodDates.push('No Data');
+        moodValues.push(0);
+    }
+
+    const moodChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: moodDates,
+            datasets: [{
+                label: 'Mood Over Time',
+                data: moodValues,
+                borderColor: '#4CAF50',
+                fill: false,
+                pointRadius: 5,
+                pointBackgroundColor: '#FF6F61',
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Mood Level',
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+
+{% endblock %}

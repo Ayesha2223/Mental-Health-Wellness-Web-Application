@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resources - HappyBird{% endblock %}
+
+{% block content %}
+<div class="resources-container">
+    <div class="resources-header" data-aos="fade-down">
+        <i class="mdi mdi-bookshelf resources-icon"></i>
+        <h1>Mental Health Resources</h1>
+        <p>Discover curated content to support your mental well-being journey</p>
+    </div>
+
+    <!-- Stress-Relieving Music Section -->
+    <div class="section-header" data-aos="fade-up">
+        <i class="mdi mdi-music section-icon"></i>
+        <h2>Stress-Relieving & Mindful Music</h2>
+        <p>Immerse yourself in calming sounds and melodies</p>
+    </div>
+
+    <div class="resources-grid" data-aos="fade-up" data-aos-delay="100">
+        <div class="resource-card music-card">
+            <div class="resource-image">
+                <img src="{% static 'images/music1.jpg' %}" alt="Calm Ocean Waves">
+                <div class="play-overlay">
+                    <i class="mdi mdi-play-circle"></i>
+                </div>
+            </div>
+            <div class="resource-content">
+                <h5>Calm Ocean Waves</h5>
+                <p>Listen to gentle ocean sounds to ease anxiety and promote relaxation.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 60 mins</span>
+                    <span><i class="mdi mdi-heart-outline"></i> 2.5k</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=1ZYbU82GVz4" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-play me-2"></i>Listen Now
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card music-card">
+            <div class="resource-image">
+                <img src="{% static 'images/music2.jpg' %}" alt="Guided Meditation Music">
+                <div class="play-overlay">
+                    <i class="mdi mdi-play-circle"></i>
+                </div>
+            </div>
+            <div class="resource-content">
+                <h5>Guided Meditation Music</h5>
+                <p>Soft, ambient tunes perfect for mindfulness sessions.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 45 mins</span>
+                    <span><i class="mdi mdi-heart-outline"></i> 1.8k</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=inpok4MKVLM" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-play me-2"></i>Listen Now
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card music-card">
+            <div class="resource-image">
+                <img src="{% static 'images/music3.jpg' %}" alt="Yoga Relaxation">
+                <div class="play-overlay">
+                    <i class="mdi mdi-play-circle"></i>
+                </div>
+            </div>
+            <div class="resource-content">
+                <h5>Yoga Relaxation Music</h5>
+                <p>Peaceful music to enhance your yoga and meditation practice.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 30 mins</span>
+                    <span><i class="mdi mdi-heart-outline"></i> 3.2k</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=2OEL4P1Rz04" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-play me-2"></i>Listen Now
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card music-card">
+            <div class="resource-image">
+                <img src="{% static 'images/music4.jpg' %}" alt="Positive Vibes">
+                <div class="play-overlay">
+                    <i class="mdi mdi-play-circle"></i>
+                </div>
+            </div>
+            <div class="resource-content">
+                <h5>Positive Energy Music</h5>
+                <p>Uplifting melodies to boost your mood and motivation.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 50 mins</span>
+                    <span><i class="mdi mdi-heart-outline"></i> 4.1k</span>
+                </div>
+                <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-play me-2"></i>Listen Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Articles Section -->
+    <div class="section-header mt-5" data-aos="fade-up">
+        <i class="mdi mdi-newspaper section-icon"></i>
+        <h2>Articles to Explore</h2>
+        <p>Insightful reads for mental wellness</p>
+    </div>
+
+    <div class="resources-grid" data-aos="fade-up" data-aos-delay="100">
+        <div class="resource-card article-card">
+            <div class="resource-image">
+                <img src="{% static 'images/article1.jpg' %}" alt="Mindfulness Tips">
+                <div class="article-tag">Mindfulness</div>
+            </div>
+            <div class="resource-content">
+                <h5>5 Simple Mindfulness Techniques</h5>
+                <p>Learn quick and effective mindful exercises to reduce stress.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 5 min read</span>
+                    <span><i class="mdi mdi-eye-outline"></i> 1.2k views</span>
+                </div>
+                <a href="https://www.mindful.org/mindfulness-practices/" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-book-open-page-variant me-2"></i>Read Article
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card article-card">
+            <div class="resource-image">
+                <img src="{% static 'images/article2.jpg' %}" alt="Self-Care Habits">
+                <div class="article-tag">Self-Care</div>
+            </div>
+            <div class="resource-content">
+                <h5>Building Healthy Self-Care Habits</h5>
+                <p>Discover how to build a sustainable self-care routine.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 7 min read</span>
+                    <span><i class="mdi mdi-eye-outline"></i> 2.3k views</span>
+                </div>
+                <a href="https://www.psychologytoday.com/us/blog/click-here-happiness/201812/7-self-care-habits-to-reduce-stress" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-book-open-page-variant me-2"></i>Read Article
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card article-card">
+            <div class="resource-image">
+                <img src="{% static 'images/article3.jpg' %}" alt="Yoga for Stress">
+                <div class="article-tag">Yoga</div>
+            </div>
+            <div class="resource-content">
+                <h5>The Benefits of Yoga for Stress Relief</h5>
+                <p>Explore how yoga can help reduce anxiety and improve mental clarity.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 6 min read</span>
+                    <span><i class="mdi mdi-eye-outline"></i> 1.8k views</span>
+                </div>
+                <a href="https://www.yogajournal.com/" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-book-open-page-variant me-2"></i>Read Article
+                </a>
+            </div>
+        </div>
+
+        <div class="resource-card article-card">
+            <div class="resource-image">
+                <img src="{% static 'images/article4.jpg' %}" alt="Motivational Tips">
+                <div class="article-tag">Motivation</div>
+            </div>
+            <div class="resource-content">
+                <h5>Staying Motivated Through Tough Times</h5>
+                <p>Tips and insights to stay resilient and keep moving forward.</p>
+                <div class="resource-meta">
+                    <span><i class="mdi mdi-clock-outline"></i> 8 min read</span>
+                    <span><i class="mdi mdi-eye-outline"></i> 3.5k views</span>
+                </div>
+                <a href="https://www.success.com/" target="_blank" class="btn btn-gradient">
+                    <i class="mdi mdi-book-open-page-variant me-2"></i>Read Article
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Links Section -->
+    <div class="quick-links-section" data-aos="fade-up">
+        <h2><i class="mdi mdi-rocket-launch-outline me-2"></i>Continue Your Journey</h2>
+        <div class="quick-links">
+            <a href="{% url 'assessment' %}" class="quick-link-card">
+                <i class="mdi mdi-clipboard-pulse"></i>
+                <span>Take Assessment</span>
+            </a>
+            <a href="{% url 'journal' %}" class="quick-link-card">
+                <i class="mdi mdi-notebook-outline"></i>
+                <span>Write in Journal</span>
+            </a>
+            <a href="{% url 'mood_tracker' %}" class="quick-link-card">
+                <i class="mdi mdi-chart-line"></i>
+                <span>Track Mood</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .resources-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .resources-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .resources-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .resources-header h1 {
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .resources-header p {
+        color: var(--text-color);
+        opacity: 0.7;
+    }
+
+    /* Section Headers */
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+        color: var(--text-color);
+        opacity: 0.7;
+    }
+
+    /* Resource Grid */
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    /* Resource Cards */
+    .resource-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .resource-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .resource-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .resource-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .resource-card:hover .resource-image img {
+        transform: scale(1.05);
+    }
+
+    /* Music Card Specifics */
+    .play-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .play-overlay i {
+        font-size: 3rem;
+        color: #fff;
+    }
+
+    .music-card:hover .play-overlay {
+        opacity: 1;
+    }
+
+    /* Article Card Specifics */
+    .article-tag {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    /* Resource Content */
+    .resource-content {
+        padding: 1.5rem;
+    }
+
+    .resource-content h5 {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .resource-content p {
+        color: var(--text-color);
+        opacity: 0.7;
+        margin-bottom: 1rem;
+    }
+
+    .resource-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+        opacity: 0.6;
+        font-size: 0.9rem;
+    }
+
+    .resource-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    /* Quick Links Section */
+    .quick-links-section {
+        text-align: center;
+        margin-top: 4rem;
+    }
+
+    .quick-links-section h2 {
+        color: var(--text-color);
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+
+    .quick-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .quick-link-card {
+        background: #fff;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-decoration: none;
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        min-width: 200px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .quick-link-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        color: var(--primary-color);
+    }
+
+    .quick-link-card i {
+        font-size: 2rem;
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .resources-container {
+            padding: 1rem;
+        }
+
+        .quick-links {
+            flex-direction: column;
+        }
+
+        .quick-link-card {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <!-- Sky background with gradient -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a1c4fd" />
+      <stop offset="100%" stop-color="#c2e9fb" />
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="75%" cy="30%" r="50%" fx="75%" fy="30%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#skyGradient)" rx="15" ry="15" />
+  
+  <!-- Sun glow effect -->
+  <circle cx="300" cy="80" r="60" fill="url(#sunGlow)" />
+  
+  <!-- Bird body - in blue for mental health theme -->
+  <ellipse cx="200" cy="150" rx="70" ry="50" fill="#4B89DC" />
+  
+  <!-- Bird head -->
+  <circle cx="250" cy="120" r="40" fill="#4B89DC" />
+  
+  <!-- Bird eye -->
+  <circle cx="265" cy="110" r="8" fill="white" />
+  <circle cx="268" cy="107" r="4" fill="black" />
+  
+  <!-- Bird smile - representing mental wellness -->
+  <path d="M 245 125 Q 265 145 285 125" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" />
+  
+  <!-- Bird wing -->
+  <path d="M 180 145 Q 150 100 130 145" fill="#4B89DC" stroke="#3A70C9" stroke-width="2" />
+  
+  <!-- Bird tail feathers -->
+  <path d="M 130 150 Q 110 120 145 150" fill="#4B89DC" stroke="#3A70C9" stroke-width="2" />
+  <path d="M 130 155 Q 100 160 145 155" fill="#4B89DC" stroke="#3A70C9" stroke-width="2" />
+  
+  <!-- Bird beak -->
+  <path d="M 290 120 L 310 125 L 290 130 Z" fill="#FF9933" />
+  
+  <!-- Heart symbol - representing mental health care -->
+  <path d="M 200 165 C 200 155 190 150 180 150 C 170 150 160 160 170 175 C 180 190 200 195 200 195 C 200 195 220 190 230 175 C 240 160 230 150 220 150 C 210 150 200 155 200 165 Z" fill="#FF5E8F" />
+  
+  <!-- Text - HappyBird -->
+  <text x="200" y="250" font-family="Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#3A70C9">HappyBird</text>
+  <text x="200" y="275" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#555">Mental Wellness</text>
+</svg>

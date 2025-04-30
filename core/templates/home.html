@@ -1,0 +1,264 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - HappyBird{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Motivational Quotes Carousel -->
+    <div id="quoteCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="120000" data-aos="fade-up">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="quote-card">
+                    <div class="quote-icon"><i class="mdi mdi-format-quote-open"></i></div>
+                    <h3 class="quote-text">"Your mental health is a priority. Your happiness is essential. Your self-care is necessary."</h3>
+                    <p class="quote-author">- Unknown</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="quote-card">
+                    <div class="quote-icon"><i class="mdi mdi-format-quote-open"></i></div>
+                    <h3 class="quote-text">"Self-care is not a luxury, it's a necessity."</h3>
+                    <p class="quote-author">- Audre Lorde</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="quote-card">
+                    <div class="quote-icon"><i class="mdi mdi-format-quote-open"></i></div>
+                    <h3 class="quote-text">"You are stronger than you think, and you are not alone."</h3>
+                    <p class="quote-author">- Unknown</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Tracker Navigation Button -->
+    <div class="mt-5 text-center mood-tracker-section" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="section-title">Track Your Mood</h2>
+        <p class="section-description">Monitor your emotional well-being and track your progress over time.</p>
+        <a href="{% url 'track_mood' %}" class="btn btn-gradient btn-lg">
+            <i class="mdi mdi-emoticon-outline me-2"></i>Go to Mood Tracker
+        </a>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="row mt-5 feature-cards">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-card meditation">
+                <div class="feature-icon">
+                    <i class="mdi mdi-meditation"></i>
+                </div>
+                <h4>Guided Meditations</h4>
+                <p>Relax and unwind with carefully curated meditations for stress relief and mindfulness.</p>
+                <a href="#" class="feature-link">Explore Meditations <i class="mdi mdi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-card journal">
+                <div class="feature-icon">
+                    <i class="mdi mdi-notebook-outline"></i>
+                </div>
+                <h4>Daily Journaling</h4>
+                <p>Reflect on your day, express your thoughts, and track your emotional progress.</p>
+                <a href="{% url 'journal' %}" class="feature-link">Start Writing <i class="mdi mdi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-card community">
+                <div class="feature-icon">
+                    <i class="mdi mdi-account-group"></i>
+                </div>
+                <h4>Community Support</h4>
+                <p>Connect with others on their mental wellness journey and share experiences.</p>
+                <a href="#" class="feature-link">Join Community <i class="mdi mdi-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <div class="mt-5 testimonials-section" data-aos="fade-up" data-aos-delay="500">
+        <h2 class="section-title text-center">What Our Users Say</h2>
+        <div class="row mt-4">
+            <div class="col-md-6" data-aos="fade-right" data-aos-delay="600">
+                <div class="testimonial-card">
+                    <div class="testimonial-icon">
+                        <i class="mdi mdi-account-circle"></i>
+                    </div>
+                    <p class="testimonial-text">"HappyBird has completely changed how I manage my mental health. The mood tracker and resources are invaluable."</p>
+                    <div class="testimonial-author">
+                        <strong>Sarah M.</strong>
+                        <span class="text-muted">Active Member</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" data-aos="fade-left" data-aos-delay="700">
+                <div class="testimonial-card">
+                    <div class="testimonial-icon">
+                        <i class="mdi mdi-account-circle"></i>
+                    </div>
+                    <p class="testimonial-text">"I love the motivational quotes and the simple yet effective journaling feature. It's my daily check-in!"</p>
+                    <div class="testimonial-author">
+                        <strong>Alex T.</strong>
+                        <span class="text-muted">Premium Member</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Quote Cards */
+        .quote-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .quote-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .quote-author {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Mood Tracker Section */
+        .mood-tracker-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-description {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        /* Feature Cards */
+        .feature-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .feature-card h4 {
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-link:hover {
+            color: var(--secondary-color);
+            transform: translateX(5px);
+        }
+
+        /* Testimonial Cards */
+        .testimonial-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testimonial-author strong {
+            color: var(--text-color);
+        }
+
+        .testimonial-author span {
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</div>
+{% endblock %}

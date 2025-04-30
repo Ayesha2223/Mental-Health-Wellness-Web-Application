@@ -1,0 +1,448 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mental Health Assessment{% endblock %}
+
+{% block content %}
+<div class="assessment-container">
+    <div class="assessment-header" data-aos="fade-down">
+        <i class="mdi mdi-brain assessment-icon"></i>
+        <h1>Mental Health Assessment</h1>
+        <p>Take a moment to check in with your mental well-being</p>
+    </div>
+
+    <div class="assessment-card" data-aos="fade-up">
+        <form method="post" class="assessment-form">
+            {% csrf_token %}
+            
+            <div class="range-slider mb-5">
+                <label class="form-label">
+                    <i class="mdi mdi-wave"></i>
+                    How overwhelmed do you feel?
+                </label>
+                <div class="range-wrapper">
+                    <input type="range" class="form-range custom-range" name="overwhelmed" min="1" max="5" value="3">
+                    <div class="range-labels">
+                        <span>Not at all</span>
+                        <span>Extremely</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="range-slider mb-5">
+                <label class="form-label">
+                    <i class="mdi mdi-emoticon-happy-outline"></i>
+                    How joyful do you feel?
+                </label>
+                <div class="range-wrapper">
+                    <input type="range" class="form-range custom-range" name="joy" min="1" max="5" value="3">
+                    <div class="range-labels">
+                        <span>Not at all</span>
+                        <span>Very joyful</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="range-slider mb-5">
+                <label class="form-label">
+                    <i class="mdi mdi-sleep"></i>
+                    How well are you sleeping?
+                </label>
+                <div class="range-wrapper">
+                    <input type="range" class="form-range custom-range" name="sleep" min="1" max="5" value="3">
+                    <div class="range-labels">
+                        <span>Poor</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-gradient w-100">
+                <i class="mdi mdi-check-circle me-2"></i>Submit Assessment
+            </button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="result-card" data-aos="fade-up">
+        <div class="result-icon">
+            <i class="mdi mdi-clipboard-pulse"></i>
+        </div>
+        <h3>Your Assessment Result</h3>
+        <p>{{ result }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Specialists Section -->
+    <div class="specialists-section" data-aos="fade-up">
+        <div class="section-header">
+            <h2><i class="mdi mdi-doctor me-2"></i>Meet Our Specialists</h2>
+            <p>Connect with experienced mental health professionals</p>
+        </div>
+        
+        <div class="specialists-grid">
+            <div class="specialist-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="specialist-image">
+                    <img src="{% static 'images/doctor1.jpg' %}" alt="Dr. Sarah">
+                    <div class="specialist-badge">Available Today</div>
+                </div>
+                <div class="specialist-info">
+                    <h5>Dr. Sarah Johnson</h5>
+                    <p class="specialist-title">Clinical Psychologist</p>
+                    <p class="specialist-desc">10+ years of experience in anxiety and mood disorders.</p>
+                    <div class="specialist-stats">
+                        <div class="stat">
+                            <i class="mdi mdi-star"></i>
+                            <span>4.9/5</span>
+                        </div>
+                        <div class="stat">
+                            <i class="mdi mdi-account-group"></i>
+                            <span>1000+ clients</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-gradient w-100" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        <i class="mdi mdi-calendar-check me-2"></i>Book Appointment
+                    </button>
+                </div>
+            </div>
+
+            <div class="specialist-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="specialist-image">
+                    <img src="{% static 'images/doctor2.jpg' %}" alt="Dr. Alex">
+                    <div class="specialist-badge">Top Rated</div>
+                </div>
+                <div class="specialist-info">
+                    <h5>Dr. Alex Carter</h5>
+                    <p class="specialist-title">Psychiatrist</p>
+                    <p class="specialist-desc">Specializing in depression, PTSD, and medication management.</p>
+                    <div class="specialist-stats">
+                        <div class="stat">
+                            <i class="mdi mdi-star"></i>
+                            <span>4.8/5</span>
+                        </div>
+                        <div class="stat">
+                            <i class="mdi mdi-account-group"></i>
+                            <span>800+ clients</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-gradient w-100" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        <i class="mdi mdi-calendar-check me-2"></i>Book Appointment
+                    </button>
+                </div>
+            </div>
+
+            <div class="specialist-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="specialist-image">
+                    <img src="{% static 'images/doctor3.jpg' %}" alt="Dr. Emily">
+                    <div class="specialist-badge">New Patients</div>
+                </div>
+                <div class="specialist-info">
+                    <h5>Dr. Emily Roberts</h5>
+                    <p class="specialist-title">Licensed Therapist</p>
+                    <p class="specialist-desc">Expert in stress management and mindfulness techniques.</p>
+                    <div class="specialist-stats">
+                        <div class="stat">
+                            <i class="mdi mdi-star"></i>
+                            <span>4.7/5</span>
+                        </div>
+                        <div class="stat">
+                            <i class="mdi mdi-account-group"></i>
+                            <span>500+ clients</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-gradient w-100" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                        <i class="mdi mdi-calendar-check me-2"></i>Book Appointment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title">
+                        <i class="mdi mdi-calendar-clock me-2"></i>Book your Session
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'book_appointment' %}" class="booking-form">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            <label for="name">Full Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label for="email">Email Address</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="date" class="form-control" id="date" name="date" required>
+                            <label for="date">Preferred Date</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control" id="notes" name="notes" rows="3" style="height: 100px"></textarea>
+                            <label for="notes">Additional Notes (Optional)</label>
+                        </div>
+                        <button type="submit" class="btn btn-gradient w-100">
+                            <i class="mdi mdi-check me-2"></i>Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .assessment-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .assessment-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .assessment-icon {
+        font-size: 3rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .assessment-header h1 {
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .assessment-header p {
+        color: var(--text-color);
+        opacity: 0.7;
+    }
+
+    /* Assessment Form Card */
+    .assessment-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        margin-bottom: 3rem;
+    }
+
+    /* Range Slider Styling */
+    .range-slider {
+        position: relative;
+    }
+
+    .range-slider .form-label {
+        display: flex;
+        align-items: center;
+        color: var(--text-color);
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .range-slider .form-label i {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    .range-wrapper {
+        position: relative;
+        padding: 0 1rem;
+    }
+
+    .custom-range {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 4px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+        outline: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid var(--primary-color);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .custom-range::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+    }
+
+    .range-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        color: var(--text-color);
+        opacity: 0.7;
+        font-size: 0.9rem;
+    }
+
+    /* Result Card */
+    .result-card {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: #fff;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .result-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.9;
+    }
+
+    .result-card h3 {
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    /* Specialists Section */
+    .specialists-section {
+        margin-top: 4rem;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+        color: var(--text-color);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .section-header p {
+        color: var(--text-color);
+        opacity: 0.7;
+    }
+
+    .specialists-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .specialist-card {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .specialist-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .specialist-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .specialist-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .specialist-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--primary-color);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .specialist-info {
+        padding: 1.5rem;
+    }
+
+    .specialist-title {
+        color: var(--primary-color);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+
+    .specialist-desc {
+        color: var(--text-color);
+        opacity: 0.7;
+        margin-bottom: 1rem;
+    }
+
+    .specialist-stats {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-color);
+        opacity: 0.8;
+    }
+
+    /* Modal Styling */
+    .modal-content {
+        border: none;
+        border-radius: 20px;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .booking-form .form-control {
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .booking-form .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+
+    @media (max-width: 768px) {
+        .assessment-container {
+            padding: 1rem;
+        }
+
+        .specialists-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}

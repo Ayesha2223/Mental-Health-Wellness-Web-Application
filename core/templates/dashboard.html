@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - HappyBird{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Welcome Section -->
+    <div class="welcome-section" data-aos="fade-down">
+        <div class="user-profile">
+            <div class="profile-avatar">
+                <i class="mdi mdi-account-circle"></i>
+            </div>
+            <div class="user-info">
+                <h2>Welcome back, {{ user.first_name|default:user.username }}! 👋</h2>
+                <p>Let's check your progress today</p>
+            </div>
+        </div>
+        
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="mdi mdi-calendar-check"></i>
+                <h3>Streak</h3>
+                <p class="stat-value">{{ streak_days }} days</p>
+            </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="mdi mdi-notebook"></i>
+                <h3>Journal Entries</h3>
+                <p class="stat-value">{{ journal_count }}</p>
+            </div>
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="mdi mdi-meditation"></i>
+                <h3>Mindful Minutes</h3>
+                <p class="stat-value">{{ mindful_minutes }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mood Overview -->
+    <div class="mood-overview" data-aos="fade-up">
+        <h3>Your Mood Journey</h3>
+        <canvas id="moodChart"></canvas>
+    </div>
+
+    <!-- Daily Challenge -->
+    <div class="daily-challenge" data-aos="fade-up">
+        <div class="challenge-card">
+            <div class="challenge-header">
+                <i class="mdi mdi-star-circle"></i>
+                <h3>Today's Challenge</h3>
+            </div>
+            <p>{{ daily_challenge }}</p>
+            <button class="btn btn-gradient" onclick="completeChallenge()">
+                <i class="mdi mdi-check"></i> Complete Challenge
+            </button>
+        </div>
+    </div>
+
+    <!-- Achievement Badges -->
+    <div class="achievements" data-aos="fade-up">
+        <h3>Your Achievements</h3>
+        <div class="badge-grid">
+            {% for badge in user_badges %}
+            <div class="badge-card {% if badge.unlocked %}unlocked{% endif %}">
+                <i class="mdi {{ badge.icon }}"></i>
+                <h4>{{ badge.name }}</h4>
+                <p>{{ badge.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .welcome-section {
+        margin-bottom: 3rem;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+        font-size: 4rem;
+        color: var(--primary-color);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    .mood-overview {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        margin-bottom: 3rem;
+    }
+
+    .daily-challenge {
+        margin-bottom: 3rem;
+    }
+
+    .challenge-card {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    .challenge-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .challenge-header i {
+        font-size: 2rem;
+    }
+
+    .badge-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .badge-card {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .badge-card.unlocked {
+        opacity: 1;
+        background: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .badge-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+        .user-profile {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    // Initialize mood chart
+    const ctx = document.getElementById('moodChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ mood_dates|safe }},
+            datasets: [{
+                label: 'Mood Level',
+                data: {{ mood_values|safe }},
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 5
+                }
+            }
+        }
+    });
+
+    function completeChallenge() {
+        // Add AJAX call to update challenge status
+        fetch('/api/complete-challenge/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                const btn = document.querySelector('.challenge-card button');
+                btn.innerHTML = '<i class="mdi mdi-check"></i> Completed!';
+                btn.disabled = true;
+            }
+        });
+    }
+</script>
+{% endblock %}

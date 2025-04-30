@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meditation & Breathing - HappyBird{% endblock %}
+
+{% block content %}
+<div class="meditation-container">
+    <!-- Meditation Timer Section -->
+    <div class="meditation-section" data-aos="fade-up">
+        <div class="timer-card">
+            <div class="timer-display">
+                <span id="minutes">10</span>:<span id="seconds">00</span>
+            </div>
+            <div class="breathing-circle" id="breathingCircle"></div>
+            <div class="timer-controls">
+                <button class="btn btn-outline-primary" onclick="setDuration(5)">5 min</button>
+                <button class="btn btn-outline-primary" onclick="setDuration(10)">10 min</button>
+                <button class="btn btn-outline-primary" onclick="setDuration(15)">15 min</button>
+                <button class="btn btn-gradient" id="startTimer">
+                    <i class="mdi mdi-play"></i> Start
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breathing Exercises -->
+    <div class="breathing-section" data-aos="fade-up">
+        <h2>Breathing Exercises</h2>
+        <div class="exercise-grid">
+            <div class="exercise-card" onclick="startBreathing('4-7-8')">
+                <div class="exercise-icon">
+                    <i class="mdi mdi-weather-windy"></i>
+                </div>
+                <h3>4-7-8 Breathing</h3>
+                <p>Inhale for 4s, hold for 7s, exhale for 8s</p>
+            </div>
+            
+            <div class="exercise-card" onclick="startBreathing('box')">
+                <div class="exercise-icon">
+                    <i class="mdi mdi-square-outline"></i>
+                </div>
+                <h3>Box Breathing</h3>
+                <p>Equal duration for inhale, hold, exhale, and hold</p>
+            </div>
+
+            <div class="exercise-card" onclick="startBreathing('deep')">
+                <div class="exercise-icon">
+                    <i class="mdi mdi-waves"></i>
+                </div>
+                <h3>Deep Breathing</h3>
+                <p>Long inhales and exhales with natural pauses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ambient Sounds -->
+    <div class="ambient-section" data-aos="fade-up">
+        <h2>Ambient Sounds</h2>
+        <div class="sound-grid">
+            <div class="sound-card" onclick="playSound('rain')">
+                <i class="mdi mdi-weather-rainy"></i>
+                <span>Rain</span>
+            </div>
+            <div class="sound-card" onclick="playSound('waves')">
+                <i class="mdi mdi-waves"></i>
+                <span>Ocean</span>
+            </div>
+            <div class="sound-card" onclick="playSound('forest')">
+                <i class="mdi mdi-tree"></i>
+                <span>Forest</span>
+            </div>
+            <div class="sound-card" onclick="playSound('white-noise')">
+                <i class="mdi mdi-white-balance-sunny"></i>
+                <span>White Noise</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .meditation-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .meditation-section {
+        margin-bottom: 4rem;
+    }
+
+    .timer-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+    }
+
+    .timer-display {
+        font-size: 5rem;
+        font-weight: 300;
+        color: var(--primary-color);
+        margin: 2rem 0;
+    }
+
+    .breathing-circle {
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 4px solid var(--primary-color);
+        margin: 2rem auto;
+        animation: pulse 4s ease infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    .timer-controls {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .exercise-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .exercise-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .exercise-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .exercise-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .sound-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .sound-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .sound-card:hover {
+        transform: translateY(-3px);
+        background: var(--primary-color);
+        color: white;
+    }
+
+    .sound-card i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .timer-controls {
+            flex-direction: column;
+        }
+        
+        .timer-controls button {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+let timer;
+let timeLeft;
+let isRunning = false;
+
+function setDuration(minutes) {
+    timeLeft = minutes * 60;
+    updateDisplay();
+}
+
+function updateDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+}
+
+document.getElementById('startTimer').addEventListener('click', function() {
+    if (!isRunning) {
+        startTimer();
+        this.innerHTML = '<i class="mdi mdi-pause"></i> Pause';
+    } else {
+        pauseTimer();
+        this.innerHTML = '<i class="mdi mdi-play"></i> Resume';
+    }
+    isRunning = !isRunning;
+});
+
+function startTimer() {
+    if (!timeLeft) timeLeft = 600; // Default 10 minutes
+    timer = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            playCompletionSound();
+            document.getElementById('startTimer').innerHTML = '<i class="mdi mdi-play"></i> Start';
+            isRunning = false;
+        }
+    }, 1000);
+}
+
+function pauseTimer() {
+    clearInterval(timer);
+}
+
+function startBreathing(type) {
+    const circle = document.getElementById('breathingCircle');
+    let animation;
+    
+    switch(type) {
+        case '4-7-8':
+            animation = [
+                { transform: 'scale(1)', opacity: 1, offset: 0 },
+                { transform: 'scale(1.2)', opacity: 0.8, offset: 0.21 }, // 4s inhale
+                { transform: 'scale(1.2)', opacity: 0.8, offset: 0.58 }, // 7s hold
+                { transform: 'scale(1)', opacity: 1, offset: 1 } // 8s exhale
+            ];
+            break;
+        // Add other breathing patterns
+    }
+    
+    circle.animate(animation, {
+        duration: 19000, // 19s total for 4-7-8
+        iterations: Infinity
+    });
+}
+
+// Ambient sound handling
+const sounds = {
+    rain: new Audio('/static/sounds/rain.mp3'),
+    waves: new Audio('/static/sounds/waves.mp3'),
+    forest: new Audio('/static/sounds/forest.mp3'),
+    'white-noise': new Audio('/static/sounds/white-noise.mp3')
+};
+
+let currentSound = null;
+
+function playSound(type) {
+    if (currentSound) {
+        currentSound.pause();
+        currentSound.currentTime = 0;
+    }
+    
+    currentSound = sounds[type];
+    currentSound.loop = true;
+    currentSound.play();
+    
+    // Update UI to show active sound
+    document.querySelectorAll('.sound-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+}
+</script>
+{% endblock %}
